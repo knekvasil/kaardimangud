@@ -7,13 +7,14 @@ function DeckProvider({ children }) {
 	const [burnDeck, setBurnDeck] = useState([]);
 
 	function shuffle() {
+		const shuffledDeck = [...deck];
 		// Fisher-Yates shuffle
-		for (let i = deck.length - 1; i > 0; i--) {
+		for (let i = shuffledDeck.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
-			[deck[i], deck[j]] = [deck[j], deck[i]];
+			[shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
 		}
 		// Update state with shuffled deck
-		setDeck(deck);
+		setDeck(shuffledDeck);
 	}
 
 	function drawFromDeck() {
