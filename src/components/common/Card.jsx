@@ -1,9 +1,10 @@
 function Card(props) {
-	const svgPath = props.svg;
-	const cardTag = `${props.value}${props.suit[0]}`;
+	const { png, value, suit } = props.data;
+	const cardTag = `${value}${suit[0]}`;
+
 	return (
 		<>
-			<img src={svgPath} alt={cardTag} />
+			<img src={png} alt={cardTag} />
 		</>
 	);
 }

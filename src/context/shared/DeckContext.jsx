@@ -66,23 +66,24 @@ function initializeDeck() {
 	const deck = [];
 
 	for (const suit of suits) {
-		const svgSuit = suit.toLowerCase();
+		const pngSuit = suit.toLowerCase();
 		for (const value of values) {
-			const svgValue = !isNaN(value) && Number.isInteger(value) ? value : value.toLowerCase();
+			const pngValue = !isNaN(value) && Number.isInteger(value) ? value : value.toLowerCase();
 
-			const svg = `src/assets/cards/fronts/${svgSuit}_${svgValue}.svg`;
+			const png = `/assets/cards/fronts/${pngSuit.toLowerCase()}_${pngValue}.png`;
 			const points = getPoints(value);
 
 			const card = {
 				suit: suit,
 				value: value,
 				points: points,
-				svg: svg,
+				png: png,
 			};
 
 			deck.push(card);
 		}
 	}
+	return deck;
 }
 
 function getPoints(value) {
