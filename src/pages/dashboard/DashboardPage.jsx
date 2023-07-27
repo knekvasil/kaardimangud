@@ -1,22 +1,25 @@
-import React, { useEffect, useContext } from "react";
-import { DeckContext } from "../../context/shared/DeckContext";
-import Card from "../../components/common/Card";
+import React from 'react';
+import '../../styles/global.css'
+import Header from '../../components/header/Header'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 function DashboardPage() {
-	const { deck, shuffle } = useContext(DeckContext);
-
-	useEffect(() => {
-		// This effect runs when the component mounts or when `deck` changes.
-		console.log("Deck changed:", deck);
-	}, [deck]);
 
 	return (
 		<>
-			<p>Dashboard</p>
-			<button onClick={shuffle}>Shuffle</button>
-			{deck.map((card) => (
-				<Card key={`${card.suit}_${card.value}`} data={card} />
-			))}
+		<Container>
+			<Row className="outlineRow">
+				<Col>
+					<Button href="/blackjack">Blackjack</Button>
+				</Col>
+				<Col>
+					<Button variant="success" href="/gin13">Gin13</Button>
+				</Col>
+			</Row>
+		</Container>
 		</>
 	);
 }
