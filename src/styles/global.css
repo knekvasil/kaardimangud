@@ -1,3 +1,26 @@
 .outlineRow {
 	border: 1px solid blue;
 }
+
+.outlineCol {
+	border: 1px solid green;
+}
+
+.menuItem {
+   text-decoration: none;
+   color: black;
+}
+
+.menuItem:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+ul.subMenu {
+	list-style-type: none;
+}
+
+li.subMenuItem {
+	text-decoration: underline;
+  	cursor: pointer;
+}

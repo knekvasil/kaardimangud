@@ -11,11 +11,12 @@ function DashboardPage() {
 	return (
 		<>
 		<Container>
-			<Row className="outlineRow">
-				<Col>
+			<Row><Col className="text-center">Dashboard</Col></Row>
+			<Row>
+				<Col className="text-center">
 					<Button href="/blackjack">Blackjack</Button>
 				</Col>
-				<Col>
+				<Col className="text-center">
 					<Button variant="success" href="/gin13">Gin13</Button>
 				</Col>
 			</Row>

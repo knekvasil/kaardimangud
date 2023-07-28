@@ -11,8 +11,9 @@ function HomePage() {
 	return (
 		<>
 		<Container>
-			<Row className="outlineRow">
-				<Col>
+			<Row><Col className="text-center">HomePage</Col></Row>
+			<Row>
+				<Col className="text-center">
 					<Button href="/dashboard">Go to Dashboard</Button>
 				</Col>
 			</Row>
