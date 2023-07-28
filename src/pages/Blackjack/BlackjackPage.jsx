@@ -1,20 +1,17 @@
 import React, { useEffect, useContext } from "react";
-import { DeckContext } from "../../context/shared/DeckContext";
+import { ShoeContext } from "../../context/Blackjack/ShoeContext";
 import Card from "../../components/common/Card";
 
 function BlackjackPage() {
-	const { deck, shuffle } = useContext(DeckContext);
+	const { shoe, shuffleShoe } = useContext(ShoeContext);
 
-	useEffect(() => {
-		// This effect runs when the component mounts or when `deck` changes.
-		console.log("Deck changed:", deck);
-	}, [deck]);
+	useEffect(() => {}, [shoe]);
 
 	return (
 		<>
-			<button onClick={shuffle}>Shuffle</button>
-			{deck.map((card) => (
-				<Card key={`${card.suit}_${card.value}`} data={card} />
+			<button onClick={shuffleShoe}>Shuffle</button>
+			{shoe?.map((card, index) => (
+				<Card key={`${card.suit}_${card.value}_${index}`} data={card} />
 			))}
 		</>
 	);

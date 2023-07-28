@@ -1,12 +1,26 @@
-import { createContext, useState } from "react";
-import { DeckContext } from "./DeckContext";
+import { createContext, useContext, useState } from "react";
+import { DeckContext } from "../shared/DeckContext";
 
 export const ShoeContext = createContext({});
 
 function ShoeProvider({ children }) {
-	const { deck, drawFromDeck, resetDecks } = useContext(DeckContext);
-	const [shoe, setShoe] = useState(() => initializeShoe(6));
+	const { deck } = useContext(DeckContext)
+	const [shoe, setShoe] = useState(() => initializeShoe(6, deck));
 	const [burnShoe, setBurnShoe] = useState([]);
+
+	function shuffleShoe() {
+		//shuffle more times to ensure randomness from sorted decks
+		for(let i = 0; i < 100; i++) {
+			const shuffledShoe= [...shoe];
+			// Fisher-Yates shuffle
+			for (let i = shuffledShoe.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[shuffledShoe[i], shuffledShoe[j]] = [shuffledShoe[j], shuffledShoe[i]];
+			}
+			// Update state with shuffled shoe
+			setShoe(shuffledShoe);
+		}
+	}
 
 	function drawFromShoe() {
 		if (shoe.length === 0) {
@@ -31,22 +45,21 @@ function ShoeProvider({ children }) {
 	}
 
 	return (
-		<ShoeContext.Provider value={{ shoe, setShoe , burnShoe, setBurnShoe, drawFromShoe, resetShoe }}>
+		<ShoeContext.Provider value={{ shoe, setShoe , burnShoe, setBurnShoe, drawFromShoe, resetShoe, shuffleShoe }}>
 			{children}
 		</ShoeContext.Provider>
 	);
 }
 
-function initializeShoe(numberOfDecks) {
+function initializeShoe(numberOfDecks, deck) {
 	const shoe = [];
 	for(let i = 0; i < numberOfDecks; i++) {
 		for(const card of deck) {
-			If(isNaN(value) && !Number.isInteger(value)) {
+			if(isNaN(card.value) && !Number.isInteger(card.value)) {
 				card.points = getPoints(card.value)
 			}
 			shoe.push(card);
 		}
-		resetDecks();
 	}	
 
 	return shoe;
@@ -63,4 +76,4 @@ function getPoints(value) {
 	}
 }
 
-export default shoeProvider;
+export default ShoeProvider;

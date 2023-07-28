@@ -5,14 +5,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import DeckProvider from "./context/shared/DeckContext";
+import ShoeProvider from "./context/Blackjack/ShoeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
 		<DeckProvider>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
+			<ShoeProvider>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</ShoeProvider>
 		</DeckProvider>
 	</React.StrictMode>
 );
