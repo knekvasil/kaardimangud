@@ -19,8 +19,3 @@
 ul.subMenu {
 	list-style-type: none;
 }
-
-li.subMenuItem {
-	text-decoration: underline;
-  	cursor: pointer;
-}
