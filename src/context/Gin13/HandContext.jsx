@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import { DeckContext } from "./DeckContext";
-import { PlayerContext } from "./PlayerContext";
+import { PlayerContext } from "../shared/PlayerContext";
+import { DeckContext } from "../shared/DeckContext";
 
 export const HandContext = createContext({});
 

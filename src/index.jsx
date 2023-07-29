@@ -6,16 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import DeckProvider from "./context/shared/DeckContext";
 import ShoeProvider from "./context/Blackjack/ShoeContext";
+import GinSuperProvider from "./context/Gin13/GinSuperContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
 		<DeckProvider>
-			<ShoeProvider>
-				<BrowserRouter>
-					<App />
-				</BrowserRouter>
-			</ShoeProvider>
+			<GinSuperProvider>
+				<ShoeProvider>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</ShoeProvider>
+			</GinSuperProvider>
 		</DeckProvider>
 	</React.StrictMode>
 );

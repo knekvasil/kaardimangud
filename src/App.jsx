@@ -5,8 +5,8 @@ import HomePage from "./pages/home/HomePage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import BlackjackPage from "./pages/Blackjack/BlackjackPage";
 import Gin13Page from "./pages/Gin13/Gin13Page";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/global.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/global.css";
 
 function App() {
 	return (
@@ -17,7 +17,7 @@ function App() {
 				<Route path="/dashboard" element={<DashboardPage />}></Route>
 				<Route path="/gin13" element={<Gin13Page />}></Route>
 				<Route path="/blackjack" element={<BlackjackPage />}></Route>
-				<Route path='*' element={<Navigate to="/dashboard" replace={true} />}></Route>
+				<Route path="*" element={<Navigate to="/dashboard" replace={true} />}></Route>
 			</Routes>
 		</div>
 	);

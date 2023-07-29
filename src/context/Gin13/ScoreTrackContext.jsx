@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from "react";
-import { PlayerContext } from "./PlayerContext";
+import { PlayerContext } from "../shared/PlayerContext";
 
 export const ScoreTrackContext = createContext({});
 
 function ScoreTrackProvider({ children }) {
 	const { players } = useContext(PlayerContext);
-
-	const [scoreTable, setScoreTable] = useState(() => initializeScoreTable(players));
+	const allPlayers = players || {};
+	const [scoreTable, setScoreTable] = useState(() => initializeScoreTable(Object.values(allPlayers)));
 
 	// Called after every round to update the score table
 	function updateScoreTable(players) {
