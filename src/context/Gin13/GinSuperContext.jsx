@@ -5,23 +5,26 @@ import FieldProvider from "./FieldContext";
 import GameProvider from "./GameContext";
 import HandProvider from "./HandContext";
 import ScoreTrackProvider from "./ScoreTrackContext";
+import DeckProvider from "./DeckContext";
 
 export const GinSuperContext = createContext({});
 
 function GinSuperProvider({ children }) {
 	return (
 		<GinSuperContext.Provider value={{}}>
-			<ActionsProvider>
-				<EvaluationProvider>
-					<FieldProvider>
-						<GameProvider>
-							<HandProvider>
-								<ScoreTrackProvider>{children}</ScoreTrackProvider>
-							</HandProvider>
-						</GameProvider>
-					</FieldProvider>
-				</EvaluationProvider>
-			</ActionsProvider>
+			<GameProvider>
+				<DeckProvider>
+					<ActionsProvider>
+						<EvaluationProvider>
+							<FieldProvider>
+								<HandProvider>
+									<ScoreTrackProvider>{children}</ScoreTrackProvider>
+								</HandProvider>
+							</FieldProvider>
+						</EvaluationProvider>
+					</ActionsProvider>
+				</DeckProvider>
+			</GameProvider>
 		</GinSuperContext.Provider>
 	);
 }
