@@ -9,10 +9,11 @@ function ScoreTrackProvider({ children }) {
 	const [scoreTable, setScoreTable] = useState(() => initializeScoreTable(Object.values(allPlayers)));
 
 	// Called after every round to update the score table
-	function updateScoreTable(players) {
+	function updateScoreTable() {
 		const updatedScoreTable = { ...scoreTable };
 
-		for (const player of players) {
+		for (const playerId of Object.keys(allPlayers)) {
+			const player = allPlayers[playerId];
 			updatedScoreTable.players[player._id][updatedScoreTable.round - 1] = player.handValue;
 		}
 		updatedScoreTable.round += 1;

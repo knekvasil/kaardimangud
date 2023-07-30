@@ -12,7 +12,7 @@ function GameProvider({ children }) {
 
 	const [playerIds, setPlayerIds] = useState([]);
 	const [gameState, setGameState] = useState({});
-	const [currentWild, setCurrentWild] = useState("");
+	const [currentWild, setCurrentWild] = useState(rounds[0]);
 	const [isTurnOver, setIsTurnOver] = useState(false);
 	const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
 
@@ -58,7 +58,16 @@ function GameProvider({ children }) {
 
 	return (
 		<GameContext.Provider
-			value={{ gameState, setGameState, currentWild, setCurrentWild, isTurnOver, setIsTurnOver, startGame }}
+			value={{
+				gameState,
+				setGameState,
+				currentWild,
+				setCurrentWild,
+				isTurnOver,
+				setIsTurnOver,
+				startGame,
+				initializePlayers,
+			}}
 		>
 			{children}
 		</GameContext.Provider>

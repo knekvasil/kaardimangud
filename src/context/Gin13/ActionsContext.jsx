@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { DeckContext } from "../shared/DeckContext";
+import { DeckContext } from "../Blackjack/DeckContext";
 import { EvaluationContext } from "./EvaluationContext";
 import { PlayerContext } from "../shared/PlayerContext";
 import { FieldContext } from "./FieldContext";
@@ -20,7 +20,7 @@ function ActionsProvider({ children }) {
 		// Remove the burn card from the hand and save it
 		const burnedCard = playerHand.splice(cardIndex, 1)[0];
 
-		// Update the players hand with the spliced array
+		// Update the player's hand
 		updatedPlayers[playerId].hand = playerHand;
 
 		setPlayers(updatedPlayers);
@@ -29,12 +29,13 @@ function ActionsProvider({ children }) {
 	}
 
 	function play(playerId, cardIndices) {
-		// Create copy of players and playerHand arrays for safe mutability
-		const updatedPlayers = [...players];
-		const playerHand = [...updatedPlayers[playerId].hand];
+		// Create a copy of the players object for safe mutability
+		const updatedPlayers = { ...players };
+		const playerToUpdate = updatedPlayers[playerId];
+		// Create a copy of the player's hand array for safe mutability
+		const playerHand = [...playerToUpdate.hand];
 
 		const playCards = [];
-
 		for (const i of cardIndices) {
 			playCards.push(playerHand[i]);
 		}
@@ -48,13 +49,19 @@ function ActionsProvider({ children }) {
 			};
 
 			setField([...field, playedSet]);
+			// Update the player's hand
+			playerToUpdate.hand = playerHand.filter((_, index) => !cardIndices.includes(index));
+
+			setPlayers(updatedPlayers);
 		}
 	}
 
 	function build(playerId, cardIndices, buildIndex) {
-		// Create copy of players and playerHand arrays for safe mutability
-		const updatedPlayers = [...players];
-		const playerHand = [...updatedPlayers[playerId].hand];
+		// Create a copy of the players object for safe mutability
+		const updatedPlayers = { ...players };
+		const playerToUpdate = updatedPlayers[playerId];
+		// Create a copy of the player's hand array for safe mutability
+		const playerHand = [...playerToUpdate.hand];
 
 		const playedCards = [];
 		for (const i of cardIndices) {
@@ -67,7 +74,7 @@ function ActionsProvider({ children }) {
 		const isValidMove = canBuild(playedCards, buildCards);
 
 		if (isValidMove) {
-			// TODO setField, setHand
+			// TODO: setField, setHand
 		}
 	}
 	return <ActionsContext.Provider value={{ burnCard, play, build }}>{children}</ActionsContext.Provider>;

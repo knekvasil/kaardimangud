@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export const PlayerContext = createContext({});
@@ -8,12 +8,14 @@ function PlayerProvider({ children }) {
 
 	function addPlayer(name) {
 		const newPlayer = {
+			_id: uuidv4(),
 			name: name,
 			hand: [],
 			handValue: 0,
 		};
-		setPlayers((prevPlayers) => ({ ...prevPlayers, [uuidv4()]: newPlayer }));
+		setPlayers((prevPlayers) => ({ ...prevPlayers, [newPlayer._id]: newPlayer }));
 	}
+
 	return <PlayerContext.Provider value={{ players, setPlayers, addPlayer }}>{children}</PlayerContext.Provider>;
 }
 
