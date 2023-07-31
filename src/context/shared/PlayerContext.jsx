@@ -6,10 +6,11 @@ export const PlayerContext = createContext({});
 function PlayerProvider({ children }) {
 	const [players, setPlayers] = useState({});
 
-	function addPlayer(name) {
+	function addPlayer(name, type) {
 		const newPlayer = {
 			_id: uuidv4(),
 			name: name,
+			type: type,
 			hand: [],
 			handValue: 0,
 		};

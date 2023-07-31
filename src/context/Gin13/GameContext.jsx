@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../shared/PlayerContext";
 import { HandContext } from "./HandContext";
+import { TYPES } from '../../constants/users'
 
 export const GameContext = createContext({});
 
@@ -52,7 +53,7 @@ function GameProvider({ children }) {
 
 	function initializePlayers(count) {
 		for (let i = 0; i < count; i++) {
-			addPlayer(`Player ${i}`);
+			addPlayer(`Player ${i}`, TYPES.PLAYER);
 		}
 	}
 

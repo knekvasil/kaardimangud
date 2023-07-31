@@ -51,7 +51,7 @@ function Gin13Page() {
 			<button onClick={startGame}>Start</button>
 			{Object.values(players).map((player) => (
 				<div key={player._id}>
-					<h2>{player.name}'s Hand:</h2>
+					<h2>{player.name}'s Hand: ({player.type})</h2>
 					<div className="hand-container">
 						{player.hand.map((card, index) => (
 							<button
