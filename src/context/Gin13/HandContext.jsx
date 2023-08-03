@@ -1,39 +1,24 @@
 import { createContext, useContext } from "react";
 import { PlayerContext } from "../shared/PlayerContext";
 import { DeckContext } from "./DeckContext";
-import { GameContext } from "./GameContext";
+
+import { drawHand } from "../../utils/handUtils";
 
 export const HandContext = createContext({});
 
 function HandProvider({ children }) {
 	const { deck, drawFromDeck } = useContext(DeckContext);
-	const { players, setPlayers } = useContext(PlayerContext);
-	const { currentWild } = useContext(GameContext);
+	const { players, setPlayers } = useContext(PlayerContext); // State
 
-	/* 
-    Prior to calling this function, verify:
-    - Deck has been reset/shuffled
-    - Players have been added
-  */
 	function drawHands() {
 		const playerArray = Object.values(players);
 		const updatedPlayers = {};
 
+		const deckCopy = [...deck];
+
 		for (const player of playerArray) {
-			const newCards = [];
-
-			for (let i = 0; i < 7; i++) {
-				const drawnCard = drawFromDeck();
-				newCards.push(drawnCard);
-			}
-
-			const updatedPlayer = {
-				...player,
-				hand: newCards,
-				handValue: getHandValue(newCards),
-			};
-
-			updatedPlayers[player._id] = updatedPlayer;
+			const hand = drawHand(deckCopy, drawFromDeck);
+			updatedPlayers[player._id] = { ...player, hand: hand, handValue: getHandValue(hand) };
 		}
 
 		// Update player state
@@ -51,13 +36,6 @@ function HandProvider({ children }) {
 		return sum;
 	}
 
-	/*
-    Can we measure how good a hand is?
-    - Amount of wilds
-    - Total value of cards
-    - How many potential three-of-a-kinds, straight-flushes (including burn card)
-    - Win probability(%)?
-  */
 	function getHandRating(hand) {}
 
 	return <HandContext.Provider value={{ drawHands, getHandValue }}>{children}</HandContext.Provider>;
