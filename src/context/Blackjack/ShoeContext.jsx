@@ -16,7 +16,7 @@ function ShoeProvider({ children }) {
 function shuffleShoe(initialShoe) {
 	const shuffledShoe = initialShoe;
 	//shuffle more times to ensure randomness from sorted shoe
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 10; i++) {
 		// Fisher-Yates shuffle
 		for (let i = shuffledShoe.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));

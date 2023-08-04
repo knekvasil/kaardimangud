@@ -16,19 +16,29 @@ import Button from "react-bootstrap/Button";
 
 function Hand({player, index}) {
 
-	const { gameState, setGameState, playerTurn, setPlayerTurn } = useContext(GameContext);
+	const { 
+		gameState, setGameState, 
+		playerTurn, setPlayerTurn, 
+		alreadyHit, setAlreadyHit 
+	} = useContext(GameContext);
+	
 	const { players, setPlayers } = useContext(PlayerContext);
 	const { shoe, setShoe } = useContext(ShoeContext);
+
+	var givePlayerOptions = (playerTurn === player._id && player.name !== TYPES.DEALER && getBlackjackHandPoints(player.hand) !== 21)
+	var handValue = getBlackjackHandPoints(player.hand)
 
 	const hit = (e) => {
     	e.preventDefault();
 		const playerArray = Object.values(players);
 		if(index !== playerArray.length & player.name !== TYPES.DEALER) {
+			setAlreadyHit(true);
 			
 			const updatedPlayer = givePlayerACard();
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedPlayer._id]: updatedPlayer }));
 
 			if(updatedPlayer.handValue >= 21) {
+				setAlreadyHit(false);
 				const newIndex = index+1 < playerArray.length ? index+1 : 0;
 				setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
 			}
@@ -41,6 +51,7 @@ function Hand({player, index}) {
     	e.preventDefault();
 		const playerArray = Object.values(players);
 		if(index !== playerArray.length & player.name !== TYPES.DEALER) {
+			setAlreadyHit(false);
 			const newIndex = index+1 < playerArray.length ? index+1 : 0;
 			setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
 		} else {
@@ -65,7 +76,7 @@ function Hand({player, index}) {
 
 	useEffect(() => {
 		const playerArray = Object.values(players)
-		if(playerTurn === playerArray[0]._id && gameState !== STATE.END_ROUND) {
+		if(playerTurn === playerArray[0]._id && player.name === TYPES.DEALER && gameState !== STATE.END_ROUND) {
 			//dealer's turn :)
 			const updatedDealer = player;
 			var dealerHand = updatedDealer.hand;
@@ -90,6 +101,13 @@ function Hand({player, index}) {
 
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedDealer._id]: updatedDealer }));
 			setGameState(prevGameState => STATE.END_ROUND);
+		} else {
+			//check if player has blackjack
+			if(getBlackjackHandPoints(player.hand) === 21 && playerTurn === player._id) {
+				//setAlreadyHit(false);
+				const newIndex = index+1 < playerArray.length ? index+1 : 0;
+				setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
+			}
 		}
 	}, [playerTurn]);
 
@@ -106,11 +124,11 @@ function Hand({player, index}) {
 		return updatedPlayer;
 	}
 
-
 	return (
 		<>
 			<Row><Col> {player.name} </Col></Row>
 			<Row>
+
 				{player.hand?.map((card, index) => (
 					<Col key={`${card.suit}_${card.value}_${index}_col`}>
 						<Card key={`${card.suit}_${card.value}_${index}_card`} data={card} />
@@ -118,9 +136,9 @@ function Hand({player, index}) {
 				))}
 			</Row>
 			<Row>
-				<Col>Value: {player.type === TYPES.PLAYER ? player.handValue : getBlackjackHandPoints(player.hand)}</Col>
+				<Col>Value: {(handValue === 21 && player.hand.length === 2) ? "Blackjack!" : handValue}</Col>
 			</Row>
-			<Row style={{display: (playerTurn === player._id & player.name !== TYPES.DEALER) ? undefined : 'none'}}>
+			<Row style={{display: givePlayerOptions ? undefined : 'none'}}>
 					<Col>
 						<Button variant="primary" onClick={hit}>Hit</Button>
 					</Col>
@@ -128,7 +146,7 @@ function Hand({player, index}) {
 						<Button variant="success" onClick={stay}>Stay</Button>
 					</Col>
 					<Col>
-						<Button variant="warning" onClick={doubleDown}>Double Down</Button>
+						<Button variant="warning" onClick={doubleDown} style={{display: alreadyHit ? 'none' : undefined}}>Double Down</Button>
 					</Col>
 			</Row>
 		</>
