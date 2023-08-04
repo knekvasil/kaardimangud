@@ -9,22 +9,6 @@ function GameProvider({ children }) {
 	const [numberOfPlayers, setNumberOfPlayers] = useState(1);
 	const [playerTurn, setPlayerTurn] = useState("");
 
-	function startGame() {
-		
-	}
-
-	function startRound() {
-
-	}
-
-	function endRound() {
-
-	}
-
-	function endGame() {
-
-	}
-
 	return (
 		<GameContext.Provider
 			value={{

@@ -46,7 +46,7 @@ function BlackjackPage() {
 			setPlayers(prevPlayers =>  updatedPlayers );
 			setShoe(prevShoe => newShoe);
 			setGameState(prevGameState => STATE.PLAYER_TURN);
-			setPlayerTurn(prevPlayerTurn => Object.keys(updatedPlayers)[0])
+			setPlayerTurn(prevPlayerTurn => Object.keys(updatedPlayers)[1])
 		}
 	}, [gameState]);
 
