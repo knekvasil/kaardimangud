@@ -5,6 +5,6 @@ export const STATE = {
     DEAL: "Dealing",
     DEALER_TURN: "Dealer Turn",
     PLAYER_TURN: "Player Turn",
-    END_DEAL: "End-Deal",
+    END_ROUND: "End-Round",
     END_SHOE: "End-Shoe"
 }

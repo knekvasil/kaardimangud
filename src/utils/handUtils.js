@@ -15,10 +15,12 @@ function getBlackjackHandPoints(hand) {
 	let aceCount = 0;
 	for(const card of hand) {
 		//the only card that has multiple values is an ace
-		if(card.points.length > 1) {
-			aceCount++;
-		} else {
-			count += card.points[0];
+		if(!card.faceDown) {
+			if(card.points.length > 1) {
+				aceCount++;
+			} else {
+				count += card.points[0];
+			}
 		}
 	}
 

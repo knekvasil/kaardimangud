@@ -66,7 +66,6 @@ function Hand({player, index}) {
 		const playerArray = Object.values(players)
 		if(playerTurn === playerArray[0]._id && gameState !== STATE.END_ROUND) {
 			//dealer's turn :)
-
 			const updatedDealer = player;
 			var dealerHand = updatedDealer.hand;
 			for(let i = 0; i < dealerHand.length; i++) {
@@ -81,8 +80,8 @@ function Hand({player, index}) {
 
 			while(dealerHandValue < 17) {
 				const updatedPlayer = givePlayerACard();
-				dealerHand = updatedPlayer.hand
-				dealerHandValue = getBlackjackHandPoints(dealerHand)
+				dealerHand = updatedPlayer.hand;
+				dealerHandValue = getBlackjackHandPoints(dealerHand);
 			}
 
 			updatedDealer.hand = dealerHand;
