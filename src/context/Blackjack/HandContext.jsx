@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import { ShoeContext } from "ShoeContext";
-import { PlayerContext } from "./PlayerContext";
+import { ShoeContext } from "./ShoeContext";
+import { PlayerContext } from "../shared/PlayerContext";
 
 export const HandContext = createContext({});
 
@@ -20,26 +20,41 @@ function HandProvider({ children }) {
 			return;
 		}
 
+		const playerArray = Object.values(players);
+		const updatedPlayers = {};
+
 		for(let i = 0; i < 2; i++) {
-			//deal out 2 cards; one at a time
-			for (const player of players) {
-				player.hand.push(drawFromShoe())
-				player.handValue = getHandValue(player.hand);
+			for (const player of playerArray) {
+
+				const playerHand = player.hand
+				const drawnCard = drawFromShoe();
+				playerHand.push(drawnCard);
+
+				const updatedPlayer = {
+					...player,
+					hand: playerHand,
+					handValue: getHandValue(playerHand),
+				};
+
+				updatedPlayers[player._id] = updatedPlayer;
 			}
-			setPlayers([...players]);
+			// Update player state
+			setPlayers((prevPlayers) => ({
+				...prevPlayers,
+				...updatedPlayers,
+			}));
 		}
 	}
 
 	function getHandValue(hand) {
-		let count, aceCount = 0;
-		let containsAce = false;
+		let count = 0;
+		let aceCount = 0;
 		for(const card of hand) {
 			//the only card that has multiple values is an ace
 			if(card.points.length > 1) {
 				aceCount++;
-				containsAce = true;
 			} else {
-				count += card.points;
+				count += card.points[0];
 			}
 		}
 

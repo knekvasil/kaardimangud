@@ -4,23 +4,21 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import DeckProvider from "./context/Blackjack/DeckContext";
-import ShoeProvider from "./context/Blackjack/ShoeContext";
 import GinSuperProvider from "./context/Gin13/GinSuperContext";
+import BlackjackSuperProvider from "./context/Blackjack/BlackjackSuperContext";
 import PlayerProvider from "./context/shared/PlayerContext";
+//import Card from "../../components/common/Card";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
 		<PlayerProvider>
 			<GinSuperProvider>
-				<DeckProvider>
-					<ShoeProvider>
-						<BrowserRouter>
-							<App />
-						</BrowserRouter>
-					</ShoeProvider>
-				</DeckProvider>
+				<BlackjackSuperProvider>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
+				</BlackjackSuperProvider>
 			</GinSuperProvider>
 		</PlayerProvider>
 	</React.StrictMode>

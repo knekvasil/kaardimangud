@@ -1,10 +1,11 @@
 function Card(props) {
-	const { png, value, suit } = props.data;
-	const cardTag = `${value}${suit[0]}`;
+	const { png, value, suit, backPng, faceDown } = props.data;
+	const cardTag = faceDown ? "Face-Down" : `${value}${suit[0]}`;
+	const cardImg = faceDown ? backPng : png
 
 	return (
 		<>
-			<img src={png} alt={cardTag} />
+			<img src={cardImg} alt={cardTag} />
 		</>
 	);
 }

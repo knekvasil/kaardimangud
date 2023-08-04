@@ -9,6 +9,30 @@ function drawHand(deck, drawFromDeck) {
 	return newCards;
 }
 
+//hand is an array
+function getBlackjackHandPoints(hand) {
+	let count = 0;
+	let aceCount = 0;
+	for(const card of hand) {
+		//the only card that has multiple values is an ace
+		if(card.points.length > 1) {
+			aceCount++;
+		} else {
+			count += card.points[0];
+		}
+	}
+
+	for (let i = aceCount; i > 0; i--) {
+		if(count + 11 <= 21 && i < 2) {
+			count += 11;
+		} else { 
+			count++;
+		}
+	}
+
+	return count;
+}
+
 /*
   Can we measure how good a hand is?
   - Amount of wilds
@@ -20,4 +44,4 @@ function getHandRating(hand) {
 	// TODO
 }
 
-export { drawHand, getHandRating };
+export { drawHand, getBlackjackHandPoints, getHandRating };
