@@ -53,9 +53,10 @@ function Hand({player, index}) {
 		
 		const playerArray = Object.values(players);
 		if(index !== playerArray.length & player.name !== TYPES.DEALER) {
-			const newIndex = index+1 < playerArray.length ? index+1 : 0;
 			const updatedPlayer = givePlayerACard();
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedPlayer._id]: updatedPlayer }));
+
+			const newIndex = index+1 < playerArray.length ? index+1 : 0;
 			setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
 		} else {
 			setPlayerTurn(prevPlayerTurn => playerArray[0]._id);
