@@ -11,7 +11,12 @@ import Button from "react-bootstrap/Button";
 
 function Game() {
 
-    const { gameState, setGameState, numberOfPlayers, setNumberOfPlayers, playerTurn, setPlayerTurn } = useContext(GameContext);
+    const { 
+        gameState, setGameState, 
+        numberOfPlayers, setNumberOfPlayers, 
+        playerTurn, setPlayerTurn,
+        setActivePlayers
+    } = useContext(GameContext);
     const { players, setPlayers } = useContext(PlayerContext);
 
     const newDeal = (e) => {
@@ -26,6 +31,7 @@ function Game() {
             updatedPlayers[player._id] = player;
         }
 
+        setActivePlayers(prevActivePlayers => [])
         setPlayers(prevPlayers => updatedPlayers);
         setGameState(prevGameState => STATE.PRE_DEAL)
     }

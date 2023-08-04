@@ -19,14 +19,15 @@ function Hand({player, index}) {
 	const { 
 		gameState, setGameState, 
 		playerTurn, setPlayerTurn, 
-		alreadyHit, setAlreadyHit 
+		alreadyHit, setAlreadyHit,
+		activePlayers, setActivePlayers
 	} = useContext(GameContext);
 	
 	const { players, setPlayers } = useContext(PlayerContext);
 	const { shoe, setShoe } = useContext(ShoeContext);
 
-	var givePlayerOptions = (playerTurn === player._id && player.name !== TYPES.DEALER && getBlackjackHandPoints(player.hand) !== 21)
-	var handValue = getBlackjackHandPoints(player.hand)
+	var givePlayerOptions = (playerTurn === player._id && player.name !== TYPES.DEALER && player.handValue !== 21)
+	var playerHandValue = player.handValue
 
 	const hit = (e) => {
     	e.preventDefault();
@@ -38,6 +39,10 @@ function Hand({player, index}) {
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedPlayer._id]: updatedPlayer }));
 
 			if(updatedPlayer.handValue >= 21) {
+				if(updatedPlayer.handValue === 21) {
+					setActivePlayers(prevActivePlayers => ({...activePlayers, updatedPlayer}))
+				}
+				//this player busted or has 21
 				setAlreadyHit(false);
 				const newIndex = index+1 < playerArray.length ? index+1 : 0;
 				setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
@@ -52,6 +57,8 @@ function Hand({player, index}) {
 		const playerArray = Object.values(players);
 		if(index !== playerArray.length & player.name !== TYPES.DEALER) {
 			setAlreadyHit(false);
+			setActivePlayers(prevActivePlayers => ({...activePlayers, player}))
+
 			const newIndex = index+1 < playerArray.length ? index+1 : 0;
 			setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
 		} else {
@@ -90,12 +97,15 @@ function Hand({player, index}) {
 
 			var dealerHandValue = getBlackjackHandPoints(dealerHand);
 
-			while(dealerHandValue < 17) {
+			//keep drawing until handValue >= 17
+			//if there are no active players, don't draw any more cards
+			while(dealerHandValue < 17 && activePlayers.length !== 0) {
 				const updatedPlayer = givePlayerACard();
 				dealerHand = updatedPlayer.hand;
 				dealerHandValue = getBlackjackHandPoints(dealerHand);
 			}
 
+			//globalDealerHandValue = dealerHandValue
 			updatedDealer.hand = dealerHand;
 			updatedDealer.handValue = dealerHandValue;
 
@@ -103,8 +113,8 @@ function Hand({player, index}) {
 			setGameState(prevGameState => STATE.END_ROUND);
 		} else {
 			//check if player has blackjack
+
 			if(getBlackjackHandPoints(player.hand) === 21 && playerTurn === player._id) {
-				//setAlreadyHit(false);
 				const newIndex = index+1 < playerArray.length ? index+1 : 0;
 				setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
 			}
@@ -124,6 +134,25 @@ function Hand({player, index}) {
 		return updatedPlayer;
 	}
 
+	function isWinner(dealer) {
+		let dealerHandValue = dealer.handValue;
+		let playerHandValue = player.handValue;
+		
+		if(player.type === TYPES.PLAYER) {
+			//evaluate player
+			if(playerHandValue <= 21) {
+				if(dealerHandValue > 21) {
+					return "Winner"
+				} else {
+					return (playerHandValue > dealerHandValue ? "Winner" : "Loser");
+				}
+			} else {
+				return "Loser"
+			}
+		} 
+		return "Loser";
+	}
+
 	return (
 		<>
 			<Row><Col> {player.name} </Col></Row>
@@ -136,7 +165,7 @@ function Hand({player, index}) {
 				))}
 			</Row>
 			<Row>
-				<Col>Value: {(handValue === 21 && player.hand.length === 2) ? "Blackjack!" : handValue}</Col>
+				<Col>Value: {(playerHandValue === 21 && player.hand.length === 2) ? "Blackjack!" : playerHandValue}</Col>
 			</Row>
 			<Row style={{display: givePlayerOptions ? undefined : 'none'}}>
 					<Col>
@@ -149,6 +178,12 @@ function Hand({player, index}) {
 						<Button variant="warning" onClick={doubleDown} style={{display: alreadyHit ? 'none' : undefined}}>Double Down</Button>
 					</Col>
 			</Row>
+			<Row>
+				<Col style={{display: player.type === TYPES.DEALER ? 'none' : undefined}}>
+					Result: {gameState === STATE.END_ROUND ? isWinner(Object.values(players)[0]) : ''}
+				</Col>
+			</Row>
+			
 		</>
 	);
 }

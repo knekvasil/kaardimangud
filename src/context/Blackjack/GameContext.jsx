@@ -9,6 +9,7 @@ function GameProvider({ children }) {
 	const [numberOfPlayers, setNumberOfPlayers] = useState(1);
 	const [playerTurn, setPlayerTurn] = useState("");
 	const [alreadyHit, setAlreadyHit] = useState(false);
+	const [activePlayers, setActivePlayers] = useState([])
 
 	return (
 		<GameContext.Provider
@@ -20,7 +21,9 @@ function GameProvider({ children }) {
 				playerTurn,
 				setPlayerTurn,
 				alreadyHit,
-				setAlreadyHit
+				setAlreadyHit,
+				activePlayers,
+				setActivePlayers
 			}}
 		>
 			{children}
