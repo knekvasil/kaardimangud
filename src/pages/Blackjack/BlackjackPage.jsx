@@ -21,6 +21,7 @@ function BlackjackPage() {
 
 			if (0.5 > ((Math.round((shoe.length/52) * 100) / 100))) {
 				console.log("Not enough cards in the deck to deal for all hands!");
+				console.log("shoe: " + shoe)
 				setGameState(prevGameState => STATE.END_SHOE)
 				return;
 			}
@@ -34,11 +35,12 @@ function BlackjackPage() {
 					const hand = player.hand;
 					if(hand.length < 2) {
 						const drawnCard = newShoe.shift();
-						if(player.type === TYPES.DEALER && i === 0) {
+						let isDealer = player.type === TYPES.DEALER && i === 0
+						if(isDealer) {
 							drawnCard.faceDown = true;
 						}
 						hand.push(drawnCard);
-						player.handValue = getBlackjackHandPoints(hand);
+						player.handValue = getBlackjackHandPoints(hand, false);
 						updatedPlayers[player._id] = player;
 					}
 				}

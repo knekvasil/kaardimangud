@@ -10,12 +10,11 @@ function drawHand(deck, drawFromDeck) {
 }
 
 //hand is an array
-function getBlackjackHandPoints(hand) {
+function getBlackjackHandPoints(hand, excludeFaceDownCard) {
 	let count = 0;
 	let aceCount = 0;
 	for(const card of hand) {
-		//the only card that has multiple values is an ace
-		if(!card.faceDown) {
+		if(!card.faceDown || excludeFaceDownCard) {
 			if(card.points.length > 1) {
 				aceCount++;
 			} else {
@@ -25,11 +24,7 @@ function getBlackjackHandPoints(hand) {
 	}
 
 	for (let i = aceCount; i > 0; i--) {
-		if(count + 11 <= 21 && i < 2) {
-			count += 11;
-		} else { 
-			count++;
-		}
+		count += ((count + 11) <= 21 && i < 2) ? 11 : 1
 	}
 
 	return count;

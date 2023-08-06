@@ -26,7 +26,10 @@ function Hand({player, index}) {
 	const { players, setPlayers } = useContext(PlayerContext);
 	const { shoe, setShoe } = useContext(ShoeContext);
 
-	var givePlayerOptions = (playerTurn === player._id && player.name !== TYPES.DEALER && player.handValue !== 21)
+	var givePlayerOptions = (playerTurn === player._id 
+							&& player.name !== TYPES.DEALER 
+							&& player.handValue !== 21
+							&& gameState !== STATE.END_ROUND)
 	var playerHandValue = player.handValue
 
 	const hit = (e) => {
@@ -72,6 +75,10 @@ function Hand({player, index}) {
 		const playerArray = Object.values(players);
 		if(index !== playerArray.length & player.name !== TYPES.DEALER) {
 			const updatedPlayer = givePlayerACard();
+
+			if(updatedPlayer.handValue <= 21) {
+				setActivePlayers(prevActivePlayers => ({...activePlayers, player}))
+			}
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedPlayer._id]: updatedPlayer }));
 
 			const newIndex = index+1 < playerArray.length ? index+1 : 0;
@@ -80,6 +87,10 @@ function Hand({player, index}) {
 			setPlayerTurn(prevPlayerTurn => playerArray[0]._id);
 		}
   	}
+
+	const split = (e) => {
+		e.preventDefault();
+	}
 
 	useEffect(() => {
 		const playerArray = Object.values(players)
@@ -95,28 +106,48 @@ function Hand({player, index}) {
 				}
 			}
 
-			var dealerHandValue = getBlackjackHandPoints(dealerHand);
+			var dealerHandValue = getBlackjackHandPoints(dealerHand, true);
 
 			//keep drawing until handValue >= 17
 			//if there are no active players, don't draw any more cards
+			const newShoe = [...shoe]
 			while(dealerHandValue < 17 && activePlayers.length !== 0) {
-				const updatedPlayer = givePlayerACard();
-				dealerHand = updatedPlayer.hand;
-				dealerHandValue = getBlackjackHandPoints(dealerHand);
+				dealerHand.push(newShoe.shift())
+				dealerHandValue = getBlackjackHandPoints(dealerHand, true);
 			}
 
-			//globalDealerHandValue = dealerHandValue
 			updatedDealer.hand = dealerHand;
 			updatedDealer.handValue = dealerHandValue;
 
+			setShoe(prevShoe => newShoe)
 			setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedDealer._id]: updatedDealer }));
 			setGameState(prevGameState => STATE.END_ROUND);
 		} else {
-			//check if player has blackjack
+			if(getBlackjackHandPoints(player.hand, true) === 21) {
+				//check if player has blackjack
+				if(playerTurn === player._id){
+					const newIndex = index+1 < playerArray.length ? index+1 : 0;
+					setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
+				} else {
+					//check if dealer has blackjack
+					if(player.name === TYPES.DEALER) {
+						const updatedDealer = player;
+						var dealerHand = updatedDealer.hand;
+						for(let i = 0; i < dealerHand.length; i++) {
+							const card = dealerHand[i];
+							if(card.faceDown) {
+								card.faceDown = false;
+								dealerHand[i] = card;
+							}
+						}
 
-			if(getBlackjackHandPoints(player.hand) === 21 && playerTurn === player._id) {
-				const newIndex = index+1 < playerArray.length ? index+1 : 0;
-				setPlayerTurn(prevPlayerTurn => playerArray[newIndex]._id);
+						updatedDealer.hand = dealerHand;	
+						updatedDealer.handValue = dealerHandValue;
+
+						setPlayers((prevPlayers) => ({ ...prevPlayers, [updatedDealer._id]: updatedDealer }));
+						setGameState(prevGameState => STATE.END_ROUND);
+					}
+				}
 			}
 		}
 	}, [playerTurn]);
@@ -127,11 +158,24 @@ function Hand({player, index}) {
 		const hand = updatedPlayer.hand;
 
 		hand.push(newShoe.shift());
-		updatedPlayer.handValue = getBlackjackHandPoints(hand);
+		updatedPlayer.handValue = getBlackjackHandPoints(hand, true);
 
 		setShoe(prevShoe => newShoe);
 
 		return updatedPlayer;
+	}
+
+	function canSplit() {
+		if(player.hand.length > 2) { return false; }
+		var firstCardPoints = 0;
+		for(const card of player.hand) {
+			if(firstCardPoints === 0) {
+				firstCardPoints = card.points[0];
+			} else {
+				return firstCardPoints === card.points[0];
+			}
+		}
+		return false;
 	}
 
 	function isWinner(dealer) {
@@ -139,11 +183,13 @@ function Hand({player, index}) {
 		let playerHandValue = player.handValue;
 		
 		if(player.type === TYPES.PLAYER) {
-			//evaluate player
 			if(playerHandValue <= 21) {
 				if(dealerHandValue > 21) {
 					return "Winner"
 				} else {
+					if(playerHandValue === dealerHandValue) {
+						return "Push";
+					}
 					return (playerHandValue > dealerHandValue ? "Winner" : "Loser");
 				}
 			} else {
@@ -165,7 +211,7 @@ function Hand({player, index}) {
 				))}
 			</Row>
 			<Row>
-				<Col>Value: {(playerHandValue === 21 && player.hand.length === 2) ? "Blackjack!" : playerHandValue}</Col>
+				<Col>Value: {(getBlackjackHandPoints(player.hand, true) === 21 && player.hand.length === 2) ? "Blackjack!" : playerHandValue}</Col>
 			</Row>
 			<Row style={{display: givePlayerOptions ? undefined : 'none'}}>
 					<Col>
@@ -176,6 +222,9 @@ function Hand({player, index}) {
 					</Col>
 					<Col>
 						<Button variant="warning" onClick={doubleDown} style={{display: alreadyHit ? 'none' : undefined}}>Double Down</Button>
+					</Col>
+					<Col style={{display: canSplit() ? undefined : 'none'}}>
+					<Button variant="info" onClick={split}>Split</Button>
 					</Col>
 			</Row>
 			<Row>
