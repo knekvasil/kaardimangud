@@ -10,11 +10,9 @@ function BlackjackSuperProvider({ children }) {
 		<BlackjackSuperContext.Provider value={{}}>
 			
 			<ShoeProvider>
-				<HandProvider>
-					<GameProvider>
-						{children}
-					</GameProvider>
-				</HandProvider>
+				<GameProvider>
+					{children}
+				</GameProvider>
 			</ShoeProvider>
 			
 		</BlackjackSuperContext.Provider>

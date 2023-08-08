@@ -24,7 +24,7 @@ function GameSetup() {
 				addPlayer('Player '+i, TYPES.PLAYER);
 			}
 		}
-        setGameState(prevGameState => STATE.PRE_DEAL);
+        setGameState(STATE.PRE_DEAL);
   	}
 
     return (
@@ -34,7 +34,7 @@ function GameSetup() {
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>Number of Players</Form.Label>
-							<Form.Range value={numberOfPlayers} onChange={e => setNumberOfPlayers(e.target.value)} min={1} max={8}/>
+							<Form.Range value={numberOfPlayers} onChange={e => setNumberOfPlayers(e.target.value)} min={1} max={30}/>
 							{numberOfPlayers}
 						</Form.Group>
 						<Form.Group>

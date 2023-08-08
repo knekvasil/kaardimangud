@@ -11,6 +11,7 @@ function PlayerProvider({ children }) {
 			_id: uuidv4(),
 			name: name,
 			type: type,
+			bankRoll: 0,
 			hand: [],
 			handValue: 0,
 		};
