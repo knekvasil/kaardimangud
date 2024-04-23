@@ -19,6 +19,9 @@ function DashboardPage() {
 				<Col className="text-center">
 					<Button variant="success" href="/gin13">Gin13</Button>
 				</Col>
+				<Col className='text-center'>
+					<Button variant='warning' href='/slots'>Slots</Button>
+				</Col>
 			</Row>
 		</Container>
 		</>

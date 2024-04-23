@@ -19,9 +19,9 @@ function GameSetup() {
     const startGame = (e) => {
     	e.preventDefault();
 		if(Object.keys(players).length < numberOfPlayers) {
-			addPlayer('Dealer', TYPES.DEALER);
+			addPlayer('Dealer', TYPES.DEALER, 0);
 			for(let i = 0; i < numberOfPlayers; i++) {
-				addPlayer('Player '+i, TYPES.PLAYER);
+				addPlayer('Player '+i, TYPES.PLAYER, 1000);
 			}
 		}
         setGameState(STATE.PRE_DEAL);
@@ -34,7 +34,7 @@ function GameSetup() {
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>Number of Players</Form.Label>
-							<Form.Range value={numberOfPlayers} onChange={e => setNumberOfPlayers(e.target.value)} min={1} max={30}/>
+							<Form.Range value={numberOfPlayers} onChange={e => setNumberOfPlayers(e.target.value)} min={1} max={8}/>
 							{numberOfPlayers}
 						</Form.Group>
 						<Form.Group>

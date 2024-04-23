@@ -1,7 +1,7 @@
 import "./Gin13Page.css";
 import React, { useState, useEffect, useContext, useCallback } from "react";
 
-import { DeckContext } from "../../context/Blackjack/DeckContext";
+import { DeckContext } from "../../context/Gin13/DeckContext";
 import { FieldContext } from "../../context/Gin13/FieldContext";
 import { GameContext } from "../../context/Gin13/GameContext";
 import { PlayerContext } from "../../context/shared/PlayerContext";

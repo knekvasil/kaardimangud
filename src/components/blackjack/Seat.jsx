@@ -22,6 +22,9 @@ function Seat({player, playerIndex}) {
                     </Col>
                 ))}
             </Row>
+            <Row className="outlineRow">
+                    <Col><intput>Wager</intput></Col>
+            </Row>
         </>
     );
 }

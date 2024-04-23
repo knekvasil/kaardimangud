@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { DeckContext } from "../Blackjack/DeckContext";
+import { DeckContext } from "../Gin13/DeckContext";
 import { EvaluationContext } from "./EvaluationContext";
 import { PlayerContext } from "../shared/PlayerContext";
 import { FieldContext } from "./FieldContext";

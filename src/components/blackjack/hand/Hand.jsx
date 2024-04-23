@@ -292,7 +292,7 @@ function Hand({player, hand, playerIndex, handIndex}) {
 						<Button variant="warning" onClick={doubleDown} style={{display: alreadyHit ? 'none' : undefined}}>Double Down</Button>
 					</Col>
 					<Col style={{display: canSplit() ? undefined : 'none'}}>
-					<Button variant="info" onClick={split}>Split</Button>
+						<Button variant="info" onClick={split}>Split</Button>
 					</Col>
 			</Row>
 			<Row>

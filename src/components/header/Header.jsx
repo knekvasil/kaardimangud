@@ -19,6 +19,7 @@ function Header() {
 	const handleClose = () => setShow(false);
   	const handleShow = () => setShow(true);
   	const [open, setOpen] = useState(false);
+	const [slotsOpen, setSlotsOpen] = useState(false)
 
 	return (
 		<>
@@ -45,14 +46,14 @@ function Header() {
 	          <Offcanvas.Title><h1>Kaardimangud</h1></Offcanvas.Title>
 	        </Offcanvas.Header>
 	        <Offcanvas.Body>
-	        	<h4><a href="/" className="menuItem">Home</a></h4>
-	        	<h4><a href="/dashboard" className="menuItem">Dashboard</a></h4>
-	        	<h4 onClick={() => setOpen(!open)} 
+	        	<h3><a href="/" className="menuItem">Home</a></h3>
+	        	<h3><a href="/dashboard" className="menuItem">Dashboard</a></h3>
+	        	<h3 onClick={() => setOpen(!open)} 
 	        		aria-controls="subMenu" 
 	        		aria-expanded={open} className="menuItem"
 	        	>
-		        	Games
-		      	</h4>
+		        	Card Games
+		      	</h3>
 			    <Collapse in={open}>
 			    	<div id="subMenu">
 				        <ul className="subMenu">
@@ -61,6 +62,21 @@ function Header() {
 				        </ul>
 			      	</div>
 			    </Collapse>
+
+				<h3 onClick={() => setSlotsOpen(!slotsOpen)} 
+	        		aria-controls="subMenu" 
+	        		aria-expanded={slotsOpen} className="menuItem"
+				>
+					Slots
+				</h3>
+				<Collapse in={slotsOpen}>
+					<div id="subMenu">
+						<ul className="subMenu"> 
+							<li><h5><a href='/slots' className='menuItem'>Slots Home</a></h5></li>
+							<li><h5><a href='/slots/fruitparty' className='menuItem'>Fruit Party</a></h5></li>
+						</ul>
+					</div>
+				</Collapse>
 	        </Offcanvas.Body>
       	</Offcanvas>
 		</>
